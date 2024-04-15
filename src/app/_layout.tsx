@@ -6,6 +6,7 @@ import {
 	ThemeProvider,
 } from '@react-navigation/native';
 
+import CartProvider from '@/providers/CartProvider';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Stack } from 'expo-router';
 import { useColorScheme } from '@components/useColorScheme';
@@ -54,10 +55,12 @@ function RootLayoutNav() {
 
 	return (
 		<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-			<Stack>
-				<Stack.Screen name='(tabs)' options={{ headerShown: false }} />
-				<Stack.Screen name='cart' options={{ presentation: 'modal' }} />
-			</Stack>
+			<CartProvider>
+				<Stack>
+					<Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+					<Stack.Screen name='cart' options={{ presentation: 'modal' }} />
+				</Stack>
+			</CartProvider>
 		</ThemeProvider>
 	);
 }

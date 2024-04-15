@@ -3,14 +3,12 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import Colors from '@/constants/Colors';
 import { Link } from 'expo-router';
 import { Product } from '../types';
+import { defaultPizzaImage } from '@/constants/Images';
 
 interface IProductListItemProps {
 	product: Product;
 	index?: number;
 }
-
-export const defaultPizzaImage =
-	'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png';
 
 const ProductListItem: React.FC<IProductListItemProps> = ({ product }) => {
 	return (
