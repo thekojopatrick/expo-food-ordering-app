@@ -1,20 +1,23 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
 
-import Colors from '@/src/constants/Colors';
-interface IProductProps {
-	image: string;
-	name: string;
-	price: number;
-}
-interface IProductListItem {
-	product: IProductProps;
+import Colors from '@/constants/Colors';
+import { Product } from '../types';
+
+interface IProductListItemProps {
+	product: Product;
 	index?: number;
 }
 
-const ProductListItem: React.FC<IProductListItem> = ({ product }) => {
+export const defaultPizzaImage =
+	'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png';
+
+const ProductListItem: React.FC<IProductListItemProps> = ({ product }) => {
 	return (
 		<View style={styles.container}>
-			<Image source={{ uri: product.image }} style={styles.image} />
+			<Image
+				source={{ uri: product.image ?? defaultPizzaImage }}
+				style={styles.image}
+			/>
 			<Text style={styles.title}>{product.name}</Text>
 			<Text style={styles.price}>${product.price}</Text>
 		</View>
@@ -25,9 +28,6 @@ export default ProductListItem;
 
 const styles = StyleSheet.create({
 	container: {
-		//flex: 1,
-		//alignItems: 'flex-start',
-		//justifyContent: 'flex-start',
 		padding: 10,
 		backgroundColor: 'white',
 		borderRadius: 8,

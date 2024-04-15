@@ -8,7 +8,7 @@ import {
 
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Stack } from 'expo-router';
-import { useColorScheme } from '@/src/components/useColorScheme';
+import { useColorScheme } from '@components/useColorScheme';
 import { useEffect } from 'react';
 import { useFonts } from 'expo-font';
 
