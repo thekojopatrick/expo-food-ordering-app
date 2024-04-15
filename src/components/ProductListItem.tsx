@@ -28,9 +28,11 @@ export default ProductListItem;
 
 const styles = StyleSheet.create({
 	container: {
+		flex: 1,
 		padding: 10,
 		backgroundColor: 'white',
 		borderRadius: 8,
+		maxWidth: '50%',
 	},
 	image: {
 		width: '95%',
