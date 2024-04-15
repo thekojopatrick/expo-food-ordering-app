@@ -43,8 +43,8 @@ const styles = StyleSheet.create({
 		aspectRatio: 1,
 	},
 	title: {
-		fontSize: 20,
-		fontWeight: 'bold',
+		fontSize: 18,
+		fontWeight: '600',
 		marginVertical: 10,
 	},
 	price: {
