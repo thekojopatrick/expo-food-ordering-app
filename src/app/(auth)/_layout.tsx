@@ -7,11 +7,11 @@ import { useAuth } from '@/providers/AuthProvider';
 export default function AuthStack() {
 	const { session, loading } = useAuth();
 
-	if (loading) {
-		return <ActivityIndicator />;
-	}
+	// if (loading) {
+	// 	return <ActivityIndicator />;
+	// }
 
-	if (!session) return <Redirect href={'/'} />;
+	//if (!session) return <Redirect href={'/'} />;
 
 	return (
 		<Stack>

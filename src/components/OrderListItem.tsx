@@ -15,7 +15,7 @@ type OrderListItemProps = {
 
 const OrderListItem = ({ order }: OrderListItemProps) => {
 	const segments = useSegments<['(user)'] | ['(admin)']>();
-	console.log({ segments });
+	//console.log({ segments });
 
 	return (
 		<Link href={`/${segments[0]}/orders/${order.id}`} asChild>
