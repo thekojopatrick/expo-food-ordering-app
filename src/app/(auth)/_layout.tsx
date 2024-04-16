@@ -1,9 +1,18 @@
-import { Link, Stack } from 'expo-router';
-import { Pressable, Text } from 'react-native';
+import { ActivityIndicator, Pressable, Text } from 'react-native';
+import { Link, Redirect, Stack } from 'expo-router';
 
 import Colors from '@/constants/Colors';
+import { useAuth } from '@/providers/AuthProvider';
 
 export default function AuthStack() {
+	const { session, loading } = useAuth();
+
+	if (loading) {
+		return <ActivityIndicator />;
+	}
+
+	if (!session) return <Redirect href={'/'} />;
+
 	return (
 		<Stack>
 			<Stack.Screen
