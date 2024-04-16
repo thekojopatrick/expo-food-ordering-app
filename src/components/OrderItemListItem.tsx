@@ -1,5 +1,4 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { Link, useSegments } from 'expo-router';
 import { Order, OrderItem } from '../types';
 
 import Colors from '../constants/Colors';
@@ -8,32 +7,31 @@ import dayjs from 'dayjs';
 import { defaultPizzaImage } from '@/constants/Images';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
-dayjs.extend(relativeTime);
-
-type OrderListItemProps = {
-	order: Order;
+type OrderItemListItemProps = {
+	orderItem: OrderItem;
 };
 
-const OrderListItem = ({ order }: OrderListItemProps) => {
-	const segments = useSegments<['(user)'] | ['(admin)']>();
-	console.log({ segments });
-
+const OrderItemListItem = ({ orderItem }: OrderItemListItemProps) => {
 	return (
-		<Link href={`/${segments[0]}/orders/${order.id}`} asChild>
-			<View style={styles.container}>
-				<View style={{ flex: 1 }}>
-					<Text style={styles.title}>User:{order.user_id}</Text>
-					<Text style={styles.title}>Order No. #{order.id}</Text>
-					<View style={styles.subtitleContainer}>
-						<Text style={styles.price}>${order.total.toFixed(2)}</Text>
-					</View>
-				</View>
-				<View style={styles.quantitySelector}>
-					<Text style={styles.quantity}>{order.status}</Text>
-					<Text>{dayjs(order.created_at).fromNow()}</Text>
+		<View style={styles.container}>
+			<Image
+				source={{ uri: orderItem.products.image || defaultPizzaImage }}
+				style={styles.image}
+				resizeMode='contain'
+			/>
+			<View style={{ flex: 1 }}>
+				<Text style={styles.title}>{orderItem.products.name}</Text>
+				<View style={styles.subtitleContainer}>
+					<Text style={styles.price}>
+						${orderItem.products.price.toFixed(2)}
+					</Text>
+					<Text>Size: {orderItem.size}</Text>
 				</View>
 			</View>
-		</Link>
+			<View style={styles.quantitySelector}>
+				<Text style={styles.quantity}>{orderItem.quantity}</Text>
+			</View>
+		</View>
 	);
 };
 
@@ -78,4 +76,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default OrderListItem;
+export default OrderItemListItem;
