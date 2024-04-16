@@ -1,11 +1,12 @@
+import { Link, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 
 import Button from '@/components/Button';
 import { authStyles } from './_styles';
-import { useRouter } from 'expo-router';
 
 const AuthIndex = () => {
+	const [email, setEmail] = useState('');
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 
@@ -16,12 +17,14 @@ const AuthIndex = () => {
 	const resetFields = () => {
 		setUsername('');
 		setPassword('');
+		setEmail('');
 	};
 
 	const validateInput = () => {
 		setErrors('');
-		if (!username) {
-			setErrors('Name is required.');
+
+		if (!email) {
+			setErrors('Email is required.');
 			return false;
 		}
 
@@ -48,12 +51,19 @@ const AuthIndex = () => {
 	return (
 		<View style={authStyles.container}>
 			<Text style={authStyles.title}>Login</Text>
-			<Text style={authStyles.label}>Username</Text>
+			{/* <Text style={authStyles.label}>Username</Text>
 			<TextInput
 				placeholder='Enter username'
 				style={authStyles.input}
 				value={username}
 				onChangeText={setUsername}
+			/> */}
+			<Text style={authStyles.label}>Email</Text>
+			<TextInput
+				value={email}
+				onChangeText={setEmail}
+				placeholder='jon@gmail.com'
+				style={authStyles.input}
 			/>
 
 			<Text style={authStyles.label}>Password</Text>
@@ -68,6 +78,9 @@ const AuthIndex = () => {
 
 			<Text style={{ color: 'red' }}>{errors}</Text>
 			<Button text={'Log in'} onPress={onSubmit} />
+			<Link href='/sign-up' style={authStyles.textButton}>
+				Create an account
+			</Link>
 		</View>
 	);
 };

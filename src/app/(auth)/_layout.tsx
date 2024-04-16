@@ -11,7 +11,7 @@ export default function AuthStack() {
 				options={{
 					title: 'Login',
 					headerRight: () => (
-						<Link href='/(auth)/signup' asChild>
+						<Link href='/(auth)/sign-up' asChild>
 							<Pressable style={{ paddingHorizontal: 10 }}>
 								<Text style={{ color: Colors.light.tint }}>Sign up</Text>
 							</Pressable>
