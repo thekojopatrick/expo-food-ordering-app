@@ -1,14 +1,16 @@
+import { Alert, Text, TextInput, View } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
 
 import Button from '@/components/Button';
 import { authStyles } from './_styles';
+import { supabase } from '@/lib/supabase';
 
 const AuthIndex = () => {
 	const [email, setEmail] = useState('');
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+	const [loading, setLoading] = useState(false);
 
 	const [errors, setErrors] = useState('');
 
@@ -42,11 +44,30 @@ const AuthIndex = () => {
 		}
 
 		if (validateInput()) {
-			router.push('/(user)');
+			loginWithEmail();
 		}
 
 		resetFields();
 	};
+
+	async function loginWithEmail() {
+		setLoading(true);
+		const {
+			error,
+			data: { session },
+		} = await supabase.auth.signInWithPassword({ email, password });
+
+		if (error) Alert.alert(error.message);
+
+		if (!session)
+			Alert.alert('Please check your inbox for email verification!');
+
+		if (session) {
+			router.push('/(user)');
+		}
+
+		setLoading(false);
+	}
 
 	return (
 		<View style={authStyles.container}>
@@ -64,6 +85,7 @@ const AuthIndex = () => {
 				onChangeText={setEmail}
 				placeholder='jon@gmail.com'
 				style={authStyles.input}
+				autoCapitalize={'none'}
 			/>
 
 			<Text style={authStyles.label}>Password</Text>
@@ -74,10 +96,15 @@ const AuthIndex = () => {
 				style={authStyles.input}
 				textContentType='password'
 				secureTextEntry={true}
+				autoCapitalize={'none'}
 			/>
 
 			<Text style={{ color: 'red' }}>{errors}</Text>
-			<Button text={'Log in'} onPress={onSubmit} />
+			<Button
+				text={loading ? 'Logging in ' : 'Log in'}
+				disabled={loading}
+				onPress={onSubmit}
+			/>
 			<Link href='/sign-up' style={authStyles.textButton}>
 				Create an account
 			</Link>
