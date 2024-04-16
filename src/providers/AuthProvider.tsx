@@ -10,9 +10,16 @@ import {
 import { Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 
+interface ProfileProps {
+	avatar_url: string | null;
+	full_name: string | null;
+	role: string;
+	username: string | null;
+}
+
 type AuthData = {
 	session: Session | null;
-	profile: object | null;
+	profile: ProfileProps | null;
 	userName: string | null;
 	isAdmin: boolean;
 	loading: boolean;
@@ -37,7 +44,7 @@ AppState.addEventListener('change', (state) => {
 export default function AuthProvider({ children }: PropsWithChildren) {
 	const [session, setSession] = useState<Session | null>(null);
 	const [loading, setLoading] = useState(true);
-	const [profile, setProfile] = useState({});
+	const [profile, setProfile] = useState<ProfileProps | null>(null);
 	const [fullName, setFullName] = useState('');
 	const [username, setUsername] = useState('');
 	const [role, setRole] = useState(null);
