@@ -81,6 +81,9 @@ const AuthIndex = () => {
 			<Link href='/sign-up' style={authStyles.textButton}>
 				Create an account
 			</Link>
+			<Link href='/(admin)/menu' style={authStyles.textButton}>
+				Go to admin
+			</Link>
 		</View>
 	);
 };

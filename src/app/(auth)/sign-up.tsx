@@ -83,6 +83,9 @@ const SignUpScreen = () => {
 			<Link href='/login' style={authStyles.textButton}>
 				Login
 			</Link>
+			<Link href='/(admin)/menu' style={authStyles.textButton}>
+				Go to admin
+			</Link>
 		</View>
 	);
 };
