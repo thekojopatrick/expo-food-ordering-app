@@ -102,7 +102,11 @@ const SignUpScreen = () => {
 			/>
 
 			<Text style={{ color: 'red' }}>{errors}</Text>
-			<Button text={'Sign up'} disabled={loading} onPress={onSubmit} />
+			<Button
+				text={loading ? 'Creating account...' : 'Sign up'}
+				disabled={loading}
+				onPress={onSubmit}
+			/>
 			<Link href='/login' style={authStyles.textButton}>
 				Login
 			</Link>
