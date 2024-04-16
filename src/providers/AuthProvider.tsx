@@ -145,7 +145,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 		}
 	};
 
-	console.log({ profile });
+	//console.log({ profile });
 
 	return (
 		<AuthContext.Provider

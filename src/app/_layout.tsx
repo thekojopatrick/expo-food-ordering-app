@@ -9,6 +9,7 @@ import {
 import AuthProvider from '@/providers/AuthProvider';
 import CartProvider from '@/providers/CartProvider';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import QueryProvider from '@/providers/QueryProvider';
 import { Stack } from 'expo-router';
 import { useColorScheme } from '@components/useColorScheme';
 import { useEffect } from 'react';
@@ -57,14 +58,16 @@ function RootLayoutNav() {
 	return (
 		<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
 			<AuthProvider>
-				<CartProvider>
-					<Stack>
-						<Stack.Screen name='(auth)' options={{ headerShown: false }} />
-						<Stack.Screen name='(admin)' options={{ headerShown: false }} />
-						<Stack.Screen name='(user)' options={{ headerShown: false }} />
-						<Stack.Screen name='cart' options={{ presentation: 'modal' }} />
-					</Stack>
-				</CartProvider>
+				<QueryProvider>
+					<CartProvider>
+						<Stack>
+							<Stack.Screen name='(auth)' options={{ headerShown: false }} />
+							<Stack.Screen name='(admin)' options={{ headerShown: false }} />
+							<Stack.Screen name='(user)' options={{ headerShown: false }} />
+							<Stack.Screen name='cart' options={{ presentation: 'modal' }} />
+						</Stack>
+					</CartProvider>
+				</QueryProvider>
 			</AuthProvider>
 		</ThemeProvider>
 	);
