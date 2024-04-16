@@ -4,10 +4,13 @@ import Colors from '@/constants/Colors';
 import { FontAwesome } from '@expo/vector-icons';
 import { Pressable } from 'react-native';
 
-export default function MenuStack() {
+export default function OrdersStack() {
 	return (
 		<Stack>
-			<Stack.Screen name='index' options={{ title: 'Orders' }} />
+			<Stack.Screen
+				name='list'
+				options={{ title: 'Orders', headerShown: false }}
+			/>
 		</Stack>
 	);
 }
