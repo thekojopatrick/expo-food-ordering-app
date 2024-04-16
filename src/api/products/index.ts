@@ -23,3 +23,21 @@ export const useProductList = () => {
 
 	return { products, isLoading, error };
 };
+
+export const useProduct = (id: number) => {
+	return useQuery({
+		queryKey: [`products`, id],
+		queryFn: async () => {
+			const { data, error } = await supabase
+				.from('products')
+				.select()
+				.eq('id', id)
+				.single();
+
+			if (error) {
+				throw new Error(error.message);
+			}
+			return data;
+		},
+	});
+};
