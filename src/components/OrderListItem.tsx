@@ -1,11 +1,10 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Link, useSegments } from 'expo-router';
-import { Order, OrderItem } from '../types';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import Colors from '../constants/Colors';
+import { Order } from '../types';
 import React from 'react';
 import dayjs from 'dayjs';
-import { defaultPizzaImage } from '@/constants/Images';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
 dayjs.extend(relativeTime);
@@ -20,7 +19,7 @@ const OrderListItem = ({ order }: OrderListItemProps) => {
 
 	return (
 		<Link href={`/${segments[0]}/orders/${order.id}`} asChild>
-			<View style={styles.container}>
+			<Pressable style={styles.container}>
 				<View style={{ flex: 1 }}>
 					<Text style={styles.title}>User:{order.user_id}</Text>
 					<Text style={styles.title}>Order No. #{order.id}</Text>
@@ -32,7 +31,7 @@ const OrderListItem = ({ order }: OrderListItemProps) => {
 					<Text style={styles.quantity}>{order.status}</Text>
 					<Text>{dayjs(order.created_at).fromNow()}</Text>
 				</View>
-			</View>
+			</Pressable>
 		</Link>
 	);
 };

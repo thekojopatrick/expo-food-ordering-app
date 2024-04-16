@@ -7,7 +7,7 @@ export default function AuthStack() {
 	return (
 		<Stack>
 			<Stack.Screen
-				name='index'
+				name='login'
 				options={{
 					title: 'Login',
 					headerRight: () => (
