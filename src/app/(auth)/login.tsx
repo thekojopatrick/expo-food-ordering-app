@@ -52,19 +52,19 @@ const AuthIndex = () => {
 
 	async function loginWithEmail() {
 		setLoading(true);
-		const {
-			error,
-			data: { session },
-		} = await supabase.auth.signInWithPassword({ email, password });
+		const { error } = await supabase.auth.signInWithPassword({
+			email,
+			password,
+		});
 
 		if (error) Alert.alert(error.message);
 
-		if (!session)
-			Alert.alert('Please check your inbox for email verification!');
+		// if (!session)
+		// 	Alert.alert('Please check your inbox for email verification!');
 
-		if (session) {
-			router.push('/(user)');
-		}
+		// if (session) {
+		// 	router.push('/(user)');
+		// }
 
 		setLoading(false);
 	}

@@ -11,7 +11,9 @@ export default function AuthStack() {
 	// 	return <ActivityIndicator />;
 	// }
 
-	//if (!session) return <Redirect href={'/'} />;
+	if (session) {
+		return <Redirect href={'/'} />;
+	}
 
 	return (
 		<Stack>
