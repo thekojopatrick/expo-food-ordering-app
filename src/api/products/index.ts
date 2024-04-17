@@ -92,9 +92,10 @@ export const useUpdateProduct = () => {
 			}
 			return updatedProduct;
 		},
-		async onSuccess(_, { id }) {
+		async onSuccess(data, { id }) {
 			await queryClient.invalidateQueries({ queryKey: ['products'] });
-			await queryClient.invalidateQueries({ queryKey: ['products', id] });
+			//await queryClient.invalidateQueries({ queryKey: ['products', id] });
+			await queryClient.setQueryData(['products', { id }], data);
 		},
 	});
 };
