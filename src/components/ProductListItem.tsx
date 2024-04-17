@@ -2,7 +2,7 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Link, useSegments } from 'expo-router';
 
 import Colors from '@/constants/Colors';
-import { Product } from '../types';
+import { Product } from '@/types';
 import { defaultPizzaImage } from '@/constants/Images';
 
 interface IProductListItemProps {
@@ -11,14 +11,10 @@ interface IProductListItemProps {
 }
 
 const ProductListItem: React.FC<IProductListItemProps> = ({ product }) => {
-	const segments = useSegments();
-
-	const path = segments
-		? segments[0]
-		: ('(user)' as string | `${string}:${string}`);
+	const segments = useSegments<['(user)'] | ['(admin)']>();
 
 	return (
-		<Link asChild href={`/${path}/menu/${product.id}`}>
+		<Link asChild href={`/${segments[0]}/menu/${product.id}`}>
 			<Pressable style={styles.container}>
 				<Image
 					source={{ uri: product.image ?? defaultPizzaImage }}

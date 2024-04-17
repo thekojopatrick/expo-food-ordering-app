@@ -39,9 +39,9 @@ const CreateProductScreen = () => {
 
 	useEffect(() => {
 		if (product) {
-			setName(product.name);
+			setName(product.name ?? '');
 			setImage(product.image ?? defaultPizzaImage);
-			setPrice(product.price.toString());
+			setPrice(product.price?.toString() ?? '');
 		}
 	}, [product]);
 

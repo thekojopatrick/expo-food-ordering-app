@@ -5,6 +5,7 @@ import * as SecureStore from 'expo-secure-store';
 import * as aesjs from 'aes-js';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Database } from '@/database.types';
 import { createClient } from '@supabase/supabase-js';
 
 const ExpoSecureStoreAdapter = {
@@ -79,7 +80,7 @@ class LargeSecureStore {
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
 	auth: {
 		storage: new LargeSecureStore(),
 		autoRefreshToken: true,

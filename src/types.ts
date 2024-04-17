@@ -1,9 +1,8 @@
-export type Product = {
-	id?: number;
-	image: string | null;
-	name: string;
-	price: number;
-};
+import { Tables } from './database.types';
+
+export type Product = Tables<'products'>;
+export type CreateProduct = Omit<Product, 'id' | 'created_at'>;
+export type UpdateProduct = Omit<Product, 'created_at'>;
 
 export type PizzaSize = 'S' | 'M' | 'L' | 'XL';
 
