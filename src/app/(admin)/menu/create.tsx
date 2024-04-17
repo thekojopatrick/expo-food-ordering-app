@@ -2,20 +2,24 @@ import * as ImagePicker from 'expo-image-picker';
 
 import { Alert, Image, StyleSheet, Text, TextInput, View } from 'react-native';
 import React, { useState } from 'react';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 
 import Button from '@/components/Button';
 import Colors from '@/constants/Colors';
 import { defaultPizzaImage } from '@/constants/Images';
+import { useInsertProduct } from '@/api/products';
 
 const CreateProductScreen = () => {
 	const [name, setName] = useState('');
 	const [price, setPrice] = useState('');
 	const [errors, setErrors] = useState('');
 	const [image, setImage] = useState<string | null>(null);
+	const router = useRouter();
 
 	const { id } = useLocalSearchParams();
 	const isUpdating = !!id;
+
+	const { mutate: createProduct } = useInsertProduct();
 
 	const resetFields = () => {
 		setName('');
@@ -43,16 +47,26 @@ const CreateProductScreen = () => {
 	};
 
 	const onCreate = () => {
-		console.warn('Creating product', name);
+		// console.warn('Creating product', name);
 
 		if (!validateInput()) {
 			return;
 		}
 
-		resetFields();
+		//Create product
+		createProduct(
+			{ name, price: parseFloat(price), image },
+			{
+				onSuccess: () => {
+					resetFields();
+					router.back();
+				},
+			}
+		);
 	};
+
 	const onUpdate = () => {
-		console.warn('Creating product', name);
+		console.warn('Update product', name);
 
 		if (!validateInput()) {
 			return;
