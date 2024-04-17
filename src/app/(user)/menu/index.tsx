@@ -7,11 +7,9 @@ import {
 } from 'react-native';
 
 import ProductListItem from '@components/ProductListItem';
-//import products from '@assets/data/products';
-import { supabase } from '@/lib/supabase';
-import { useEffect } from 'react';
 import { useProductList } from '@/api/products';
-import { useQuery } from '@tanstack/react-query';
+
+//import products from '@assets/data/products';
 
 export default function MenuScreen() {
 	const { products, isLoading, error } = useProductList();
