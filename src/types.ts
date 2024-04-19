@@ -1,4 +1,4 @@
-import { Tables } from './database.types';
+import { Tables, TablesInsert, TablesUpdate } from './database.types';
 
 export type Product = Tables<'products'>;
 export type CreateProduct = Omit<Product, 'id' | 'created_at'>;
@@ -23,14 +23,20 @@ export const OrderStatusList: OrderStatus[] = [
 
 export type OrderStatus = 'New' | 'Cooking' | 'Delivering' | 'Delivered';
 
-export type Order = {
-	id: number;
-	created_at: string;
-	total: number;
-	user_id: string;
-	status: OrderStatus;
-	order_items?: OrderItem[];
-};
+export type Order = Tables<'orders'>;
+export type CreateOrder = TablesInsert<'orders'>;
+export type UpdateOrder = TablesUpdate<'orders'>;
+
+// export type Order = {
+// 	id: number;
+// 	created_at: string;
+// 	total: number;
+// 	user_id: string;
+// 	status: OrderStatus;
+// 	order_items?: OrderItem[];
+// };
+//export type OrderItem = Tables<'order_items'>;
+export type CreateOrderItem = TablesInsert<'order_items'>;
 
 export type OrderItem = {
 	id: number;

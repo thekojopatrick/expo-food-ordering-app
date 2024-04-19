@@ -14,7 +14,7 @@ type CartListItemProps = {
 
 const CartListItem = ({ cartItem }: CartListItemProps) => {
 	const { updateQuantity } = useCart();
-	console.log({ cartItem });
+	//console.log({ cartItem });
 
 	return (
 		<View style={styles.container}>

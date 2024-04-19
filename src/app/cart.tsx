@@ -7,7 +7,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useCart } from '@/providers/CartProvider';
 
 export default function CartScreen() {
-	const { items, total } = useCart();
+	const { items, total, checkout } = useCart();
 
 	return (
 		<View style={styles.container}>
@@ -17,7 +17,7 @@ export default function CartScreen() {
 				contentContainerStyle={{ gap: 10 }}
 			/>
 			<Text style={styles.totalText}>Total : ${total}</Text>
-			<Button text='Checkout' />
+			<Button text='Checkout' onPress={checkout} />
 
 			{/* Use a light status bar on iOS to account for the black space above the modal */}
 			<StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />

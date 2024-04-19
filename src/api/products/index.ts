@@ -49,23 +49,21 @@ export const useInsertProduct = () => {
 
 	return useMutation({
 		async mutationFn(data: CreateProduct) {
-			const {
-				data: newProduct,
-				error,
-				status,
-			} = await supabase.from('products').upsert([data]).single();
+			const { data: newProduct, error } = await supabase
+				.from('products')
+				.insert(data)
+				.single();
 
 			if (error) {
 				throw new Error(error.message);
-			} else if (status !== 200) {
-				throw new Error('Create Product Failed');
 			}
-			console.log({ newProduct });
+			//console.log({ newProduct });
 			return newProduct;
 		},
 
-		async onSuccess() {
+		async onSuccess(data) {
 			await queryClient.invalidateQueries({ queryKey: ['products'] });
+			await queryClient.setQueryData(['products'], data);
 		},
 	});
 };

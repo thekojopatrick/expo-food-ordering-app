@@ -84,6 +84,35 @@ const CreateProductScreen = () => {
 		);
 	};
 
+	// const onCreate = async () => {
+	// 	console.log('Creating product', name);
+
+	// 	if (!validateInput()) {
+	// 		return;
+	// 	}
+
+	// 	try {
+	// 		// Create product
+	// 		const newProduct = await createProduct({
+	// 			name,
+	// 			price: parseFloat(price),
+	// 			image,
+	// 		});
+
+	// 		console.log({ newProduct });
+
+	// 		// Call onSuccess callback if creation is successful
+	// 		if (newProduct!) {
+	// 			resetFields();
+	// 			router.back();
+	// 		}
+	// 	} catch (error) {
+	// 		// Handle any errors that occur during product creation
+	// 		console.error('Error creating product:', error);
+	// 		// Optionally, you can show an error message to the user
+	// 	}
+	// };
+
 	const onUpdate = () => {
 		console.log('Updating product', name);
 
