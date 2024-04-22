@@ -35,17 +35,17 @@ export type UpdateOrder = TablesUpdate<'orders'>;
 // 	status: OrderStatus;
 // 	order_items?: OrderItem[];
 // };
-//export type OrderItem = Tables<'order_items'>;
+export type OrderItem = Tables<'order_items'> & { products: Product };
 export type CreateOrderItem = TablesInsert<'order_items'>;
 
-export type OrderItem = {
-	id: number;
-	product_id: number;
-	products: Product;
-	order_id: number;
-	size: PizzaSize;
-	quantity: number;
-};
+// export type OrderItem = {
+// 	id: number;
+// 	product_id: number;
+// 	products: Product;
+// 	order_id: number;
+// 	size: PizzaSize;
+// 	quantity: number;
+// };
 
 export type Profile = {
 	id: string;

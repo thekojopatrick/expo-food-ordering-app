@@ -6,14 +6,14 @@ import {
 	Text,
 	View,
 } from 'react-native';
+import { OrderItem, OrderStatusList } from '@/types';
 import { Stack, useLocalSearchParams } from 'expo-router';
+//import orders from '@assets/data/orders';
+import { useOrderDetails, useUpdateOrder } from '@/api/orders';
 
 import Colors from '@/constants/Colors';
 import OrderItemListItem from '@/components/OrderItemListItem';
 import OrderListItem from '@/components/OrderListItem';
-import { OrderStatusList } from '@/types';
-//import orders from '@assets/data/orders';
-import { useOrderDetails } from '@/api/orders';
 
 const OrderDetailScreen = () => {
 	const { id: paramId } = useLocalSearchParams();
@@ -21,6 +21,7 @@ const OrderDetailScreen = () => {
 	const id = parseFloat(typeof paramId === 'string' ? paramId : paramId?.[0]);
 
 	const { data: order, isLoading, isError } = useOrderDetails(id);
+	const { mutate: UpdateOrder } = useUpdateOrder();
 
 	if (isLoading) {
 		return <ActivityIndicator />;
@@ -30,7 +31,9 @@ const OrderDetailScreen = () => {
 		return <Text>Order not found!</Text>;
 	}
 
-	const updateStatus = (status: string) => {};
+	const updateStatus = (status: string) => {
+		UpdateOrder({ id: id, updatedFields: { status } });
+	};
 
 	return (
 		<View style={styles.container}>
@@ -38,7 +41,9 @@ const OrderDetailScreen = () => {
 
 			<FlatList
 				data={order?.order_items}
-				renderItem={({ item }) => <OrderItemListItem orderItem={item} />}
+				renderItem={({ item }) => (
+					<OrderItemListItem orderItem={item as OrderItem} />
+				)}
 				contentContainerStyle={{ gap: 10 }}
 				ListHeaderComponent={() => <OrderListItem order={order!} />}
 				ListFooterComponent={() => (
