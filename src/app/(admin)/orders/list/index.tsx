@@ -8,11 +8,14 @@ import {
 
 import OrderListItem from '@/components/OrderListItem';
 import { useAdminOrderList } from '@/api/orders';
+import { useInsertOrderSubscription } from '@/api/orders/subscriptions';
 
 //import orders from '@assets/data/orders';
 
 export default function OrdersScreen() {
 	const { orders, isLoading, error } = useAdminOrderList({ archived: false });
+
+	useInsertOrderSubscription();
 
 	if (isLoading) {
 		return <ActivityIndicator />;
