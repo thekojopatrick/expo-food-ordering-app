@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { Stack, useLocalSearchParams } from 'expo-router';
 
+import { OrderItem } from '@/types';
 import OrderItemListItem from '@/components/OrderItemListItem';
 import OrderListItem from '@/components/OrderListItem';
 import orders from '@assets/data/orders';
@@ -35,7 +36,9 @@ const OrderDetailScreen = () => {
 
 			<FlatList
 				data={order?.order_items}
-				renderItem={({ item }) => <OrderItemListItem orderItem={item} />}
+				renderItem={({ item }) => (
+					<OrderItemListItem orderItem={item as OrderItem} />
+				)}
 				contentContainerStyle={{ gap: 10 }}
 			/>
 		</View>
