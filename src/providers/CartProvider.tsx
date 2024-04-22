@@ -50,7 +50,7 @@ const CartProvider = ({ children }: PropsWithChildren) => {
 		setItems([newCartItem, ...items]);
 	};
 
-	//Update Qunantity
+	//Update Quantity
 	const updateQuantity = (itemId: string, amount: -1 | 1) => {
 		//find the item and update its quantity
 		console.log(itemId, amount);
@@ -97,7 +97,7 @@ const CartProvider = ({ children }: PropsWithChildren) => {
 			onSuccess: () => {
 				clearCart();
 				console.log({ orderItems });
-				router.push(`/(user)/orders/${order.id}`);
+				router.navigate(`/(user)/orders/${order.id}`);
 			},
 		});
 	};

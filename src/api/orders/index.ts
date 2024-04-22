@@ -17,11 +17,13 @@ export const useAdminOrderList = ({ archived = false }) => {
 			const { data, error, status } = await supabase
 				.from('orders')
 				.select(`*`)
-				.in('status', statuses);
+				.in('status', statuses)
+				.order('created_at', { ascending: false });
 
 			if (error) {
 				throw new Error(error.message);
 			}
+			console.log({ status });
 
 			return data;
 		},
