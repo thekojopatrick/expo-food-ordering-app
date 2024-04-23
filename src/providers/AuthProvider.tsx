@@ -1,5 +1,5 @@
 import { Alert, AppState } from 'react-native';
-import {
+import React, {
 	PropsWithChildren,
 	createContext,
 	useContext,

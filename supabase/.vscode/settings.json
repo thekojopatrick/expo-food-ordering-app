@@ -1,0 +1,6 @@
+{
+	"cSpell.words": ["CRXP", "Qwgn", "Reil", "XVCJ"],
+	"deno.enable": true,
+	"deno.lint": false
+	// "deno.unstable": false
+}
