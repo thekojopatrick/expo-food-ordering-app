@@ -1,5 +1,6 @@
 import { CartItem, Order, Product } from '@/types';
 import { PropsWithChildren, createContext, useContext, useState } from 'react';
+import { initializePaymentSheet, openPaymentSheet } from '@/lib/stripe';
 
 import { randomUUID } from 'expo-crypto';
 import { useInsertOrder } from '@/api/orders';
@@ -74,7 +75,15 @@ const CartProvider = ({ children }: PropsWithChildren) => {
 		setItems([]);
 	};
 
-	const checkout = () => {
+	const checkout = async () => {
+		await initializePaymentSheet(Math.floor(total * 100));
+
+		const payed = await openPaymentSheet();
+
+		if (!payed) {
+			return;
+		}
+
 		if (total !== 0) {
 			createOrder(
 				{ total },
