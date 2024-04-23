@@ -1,3 +1,4 @@
+import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
 
 import { Alert, Image, StyleSheet, Text, TextInput, View } from 'react-native';
@@ -12,7 +13,10 @@ import {
 
 import Button from '@/components/Button';
 import Colors from '@/constants/Colors';
+import { decode } from 'base64-arraybuffer';
 import { defaultPizzaImage } from '@/constants/Images';
+import { randomUUID } from 'expo-crypto';
+import { supabase } from '@/lib/supabase';
 
 const CreateProductScreen = () => {
 	const { id: paramId } = useLocalSearchParams();
@@ -39,9 +43,9 @@ const CreateProductScreen = () => {
 
 	useEffect(() => {
 		if (product) {
-			setName(product.name ?? '');
+			setName(product.name);
 			setImage(product.image ?? defaultPizzaImage);
-			setPrice(product.price?.toString() ?? '');
+			setPrice(product.price?.toString());
 		}
 	}, [product]);
 
@@ -65,8 +69,12 @@ const CreateProductScreen = () => {
 		return true;
 	};
 
-	const onCreate = () => {
+	const onCreate = async () => {
 		console.log('Creating product', name);
+
+		const imagePath = await uploadImage();
+
+		console.log({ imagePath });
 
 		if (!validateInput()) {
 			return;
@@ -74,7 +82,7 @@ const CreateProductScreen = () => {
 
 		//Create product
 		createProduct(
-			{ name, price: parseFloat(price), image },
+			{ name, price: parseFloat(price), image: imagePath! },
 			{
 				onSuccess: () => {
 					resetFields();
@@ -84,37 +92,20 @@ const CreateProductScreen = () => {
 		);
 	};
 
-	// const onCreate = async () => {
-	// 	console.log('Creating product', name);
-
-	// 	if (!validateInput()) {
-	// 		return;
-	// 	}
-
-	// 	try {
-	// 		// Create product
-	// 		const newProduct = await createProduct({
-	// 			name,
-	// 			price: parseFloat(price),
-	// 			image,
-	// 		});
-
-	// 		console.log({ newProduct });
-
-	// 		// Call onSuccess callback if creation is successful
-	// 		if (newProduct!) {
-	// 			resetFields();
-	// 			router.back();
-	// 		}
-	// 	} catch (error) {
-	// 		// Handle any errors that occur during product creation
-	// 		console.error('Error creating product:', error);
-	// 		// Optionally, you can show an error message to the user
-	// 	}
-	// };
-
-	const onUpdate = () => {
+	const onUpdate = async () => {
 		console.log('Updating product', name);
+
+		const imagePath = await uploadImage();
+
+		//Get public domain image
+		const { data: domainImage } = supabase.storage
+			.from('product-images')
+			.getPublicUrl(imagePath!);
+
+		const publicImageUrl = domainImage.publicUrl;
+		console.log({ publicImageUrl });
+
+		//console.log({ imagePath });
 
 		if (!validateInput()) {
 			return;
@@ -122,7 +113,7 @@ const CreateProductScreen = () => {
 
 		//Update product
 		updateProduct(
-			{ id, name, price: parseFloat(price), image },
+			{ id, name, price: parseFloat(price), image: imagePath! },
 			{
 				onSuccess: () => {
 					resetFields();
@@ -164,12 +155,37 @@ const CreateProductScreen = () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
 			allowsEditing: true,
-			aspect: [4, 3],
+			aspect: [4, 4],
 			quality: 1,
 		});
 
 		if (!result.canceled) {
 			setImage(result.assets[0].uri);
+		}
+	};
+
+	const uploadImage = async () => {
+		if (!image?.startsWith('file://')) {
+			return;
+		}
+		//console.log({ image });
+
+		const base64 = await FileSystem.readAsStringAsync(image, {
+			encoding: 'base64',
+		});
+		const filePath = `${randomUUID()}.${image ? 'png' : 'jpeg'}`;
+		const contentType = 'image/png' ?? 'image/jpeg';
+		const { data, error } = await supabase.storage
+			.from('product-images')
+			.upload(filePath, decode(base64), { contentType });
+
+		//console.log({ error });
+		//console.log({ data });
+
+		const dataImagePath = data?.path;
+
+		if (data) {
+			return data.path;
 		}
 	};
 

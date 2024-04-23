@@ -3,6 +3,7 @@ import { Link, useSegments } from 'expo-router';
 
 import Colors from '@/constants/Colors';
 import { Product } from '@/types';
+import RemoteImage from './RemoteImage';
 import { defaultPizzaImage } from '@/constants/Images';
 
 interface IProductListItemProps {
@@ -13,14 +14,22 @@ interface IProductListItemProps {
 const ProductListItem: React.FC<IProductListItemProps> = ({ product }) => {
 	const segments = useSegments<['(user)'] | ['(admin)']>();
 
+	//console.log(product.image);
+
 	return (
 		<Link asChild href={`/${segments[0]}/menu/${product.id}`}>
 			<Pressable style={styles.container}>
-				<Image
-					source={{ uri: product.image ?? defaultPizzaImage }}
+				<RemoteImage
+					fallback={defaultPizzaImage}
+					path={product.image!}
 					style={styles.image}
 					resizeMode='contain'
 				/>
+				{/* <Image
+					source={{ uri: product.image ?? defaultPizzaImage }}
+					style={styles.image}
+					resizeMode='contain'
+				/> */}
 				<Text style={styles.title}>{product.name}</Text>
 				<Text style={styles.price}>${product.price}</Text>
 			</Pressable>

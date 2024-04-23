@@ -3,6 +3,7 @@ import { Order, OrderItem } from '../types';
 
 import Colors from '../constants/Colors';
 import React from 'react';
+import RemoteImage from './RemoteImage';
 import dayjs from 'dayjs';
 import { defaultPizzaImage } from '@/constants/Images';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -14,11 +15,18 @@ type OrderItemListItemProps = {
 const OrderItemListItem = ({ orderItem }: OrderItemListItemProps) => {
 	return (
 		<View style={styles.container}>
-			<Image
+			{/* <Image
 				source={{ uri: orderItem.products.image || defaultPizzaImage }}
 				style={styles.image}
 				resizeMode='contain'
+			/> */}
+			<RemoteImage
+				fallback={defaultPizzaImage}
+				path={orderItem.products.image!}
+				style={styles.image}
+				resizeMode='contain'
 			/>
+
 			<View style={{ flex: 1 }}>
 				<Text style={styles.title}>{orderItem.products.name}</Text>
 				<View style={styles.subtitleContainer}>

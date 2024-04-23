@@ -12,6 +12,7 @@ import Button from '@/components/Button';
 import Colors from '@/constants/Colors';
 import { PizzaSize } from '@/types';
 import React from 'react';
+import RemoteImage from '@/components/RemoteImage';
 import { defaultPizzaImage } from '@/constants/Images';
 //import products from '@assets/data/products';
 import { useCart } from '@/providers/CartProvider';
@@ -57,11 +58,17 @@ const ProductDetailsScreen = () => {
 	return (
 		<View style={styles.container}>
 			<Stack.Screen options={{ title: `${product.name}` }} />
-			<Image
-				source={{ uri: product.image ?? defaultPizzaImage }}
+			<RemoteImage
+				fallback={defaultPizzaImage}
+				path={product.image!}
 				style={styles.image}
 				resizeMode='contain'
 			/>
+			{/* <Image
+				source={{ uri: product.image ?? defaultPizzaImage }}
+				style={styles.image}
+				resizeMode='contain'
+			/> */}
 			<Text>Select size</Text>
 			<View style={styles.sizes}>
 				{sizes.map((size, index) => (
