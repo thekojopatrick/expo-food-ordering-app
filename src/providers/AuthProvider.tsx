@@ -47,7 +47,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 	const [profile, setProfile] = useState<ProfileProps | null>(null);
 	const [fullName, setFullName] = useState('');
 	const [username, setUsername] = useState('');
-	const [role, setRole] = useState(null);
+	const [role, setRole] = useState<string | null>(null);
 	const [avatarUrl, setAvatarUrl] = useState('');
 
 	useEffect(() => {
@@ -96,10 +96,10 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 			}
 
 			if (data) {
-				setUsername(data.username);
-				setRole(data.role);
-				setAvatarUrl(data.avatar_url);
-				setFullName(data.full_name);
+				setUsername(data.username!);
+				setRole(data?.role as string);
+				setAvatarUrl(data.avatar_url!);
+				setFullName(data.full_name!);
 				setProfile({
 					...data,
 				});
@@ -125,10 +125,10 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 			if (!session?.user) throw new Error('No user on the session!');
 
 			const updates = {
+				...session.user,
 				id: session?.user.id,
 				username,
 				avatar_url,
-				updated_at: new Date(),
 			};
 
 			const { error } = await supabase.from('profiles').upsert(updates);
