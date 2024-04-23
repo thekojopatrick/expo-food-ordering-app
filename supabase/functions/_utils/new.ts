@@ -3,7 +3,8 @@
 // This enables autocomplete, go to definition, etc.
 
 // esm.sh is used to compile stripe-node to be compatible with ES modules.
-import Stripe from 'https://esm.sh/stripe@12.0.0?target=deno&no-check';
+//import Stripe from 'https://esm.sh/stripe@12.0.0?target=deno&no-check';
+import Stripe from 'stripe';
 import { serve } from 'https://deno.land/std@0.131.0/http/server.ts';
 
 const corsHeaders = {
@@ -11,7 +12,7 @@ const corsHeaders = {
 	'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey',
 };
 
-const stripe = Stripe('STRIPE_API_KEY', {
+const stripe = new Stripe('STRIPE_API_KEY', {
 	// This is needed to use the Fetch API rather than relying on the Node http
 	// package.
 	httpClient: Stripe.createFetchHttpClient(),
@@ -28,7 +29,7 @@ serve(async (req) => {
 
 	try {
 		const { name } = await req.json();
-		const customer = await stripe.customers.create({
+		const customer = await stripe?.customers.create({
 			email: `${name}@test.de`,
 		});
 		const data = customer;

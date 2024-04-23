@@ -1,5 +1,5 @@
 //import * as mod from 'https://deno.land/std@0.168.0/http/server.ts';
-//import {serve} from 'https://deno.land/std@0.223.0/http/server.ts';
+//import  * as mod from 'https://deno.land/std@0.223.0/http/server.ts';
 
 // Follow this setup guide to integrate the Deno language server with your editor:
 // https://deno.land/manual/getting_started/setup_your_environment
