@@ -24,7 +24,7 @@ const fetchPaymentSheetParams = async (amount: number) => {
 
 export const initializePaymentSheet = async (amount: number) => {
 	console.log('Initializing payment sheet  for: ' + amount);
-	const { paymentIntent, publishableKey } =
+	const { paymentIntent, publishableKey, customer, ephemeralKey } =
 		await fetchPaymentSheetParams(amount);
 	if (!paymentIntent || !publishableKey) return;
 
@@ -33,6 +33,8 @@ export const initializePaymentSheet = async (amount: number) => {
 	await initPaymentSheet({
 		merchantDisplayName: 'KojoDev',
 		returnURL: 'foodapp://stripe-redirect',
+		customerId: customer,
+		customerEphemeralKeySecret: ephemeralKey,
 		paymentIntentClientSecret: paymentIntent,
 		defaultBillingDetails: {
 			name: 'John Doe',

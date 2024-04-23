@@ -1,22 +1,27 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.42.5';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.42.4';
 import { stripe } from './stripe.ts';
 
 export const createOrRetrieveProfile = async (req: Request) => {
+	const authHeader = req.headers.get('Authorization')!;
+
 	const supabaseClient = createClient(
 		Deno.env.get('SUPABASE_URL') ?? '',
 		Deno.env.get('SUPABASE_ANON_KEY') ?? '',
 		{
 			global: {
-				headers: { Authorization: req.headers.get('Authorization')! },
+				headers: { Authorization: authHeader },
 			},
 		}
 	);
+	const JWT = req.headers.get('Authorization')?.split(' ')[1] || '';
 	// Now we can get the session or user object
 	const {
 		data: { user },
-	} = await supabaseClient.auth.getUser();
+	} = await supabaseClient.auth.getUser(JWT);
 
 	if (!user) throw new Error('No user found');
+
+	console.log({ user });
 
 	const { data: profile, error } = await supabaseClient
 		.from('profiles')
