@@ -1,5 +1,8 @@
 import { Tables, TablesInsert, TablesUpdate } from './database.types';
 
+export type Profile = Tables<'profiles'>;
+export type UpdateProfile = TablesUpdate<'profiles'>;
+
 export type Product = Tables<'products'>;
 export type CreateProduct = Omit<Product, 'id' | 'created_at'>;
 export type UpdateProduct = Omit<Product, 'created_at'>;
@@ -47,7 +50,7 @@ export type CreateOrderItem = TablesInsert<'order_items'>;
 // 	quantity: number;
 // };
 
-export type Profile = {
-	id: string;
-	group: string;
-};
+// export type Profile = {
+// 	id: string;
+// 	group: string;
+// };

@@ -7,19 +7,13 @@ import React, {
 	useState,
 } from 'react';
 
+import { Profile } from '@/types';
 import { Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 
-interface ProfileProps {
-	avatar_url: string | null;
-	full_name: string | null;
-	role: string;
-	username: string | null;
-}
-
 type AuthData = {
 	session: Session | null;
-	profile: ProfileProps | null;
+	profile: Profile | null;
 	userName: string | null;
 	isAdmin: boolean;
 	loading: boolean;
@@ -33,20 +27,20 @@ const AuthContext = createContext<AuthData>({
 	loading: true,
 });
 
-AppState.addEventListener('change', (state) => {
-	if (state === 'active') {
-		supabase.auth.startAutoRefresh();
-	} else {
-		supabase.auth.stopAutoRefresh();
-	}
-});
+// AppState.addEventListener('change', (state) => {
+// 	if (state === 'active') {
+// 		supabase.auth.startAutoRefresh();
+// 	} else {
+// 		supabase.auth.stopAutoRefresh();
+// 	}
+// });
 
 export default function AuthProvider({ children }: PropsWithChildren) {
 	const [session, setSession] = useState<Session | null>(null);
 	const [loading, setLoading] = useState(true);
-	const [profile, setProfile] = useState<ProfileProps | null>(null);
+	const [profile, setProfile] = useState<Profile | null>(null);
 	const [fullName, setFullName] = useState('');
-	const [username, setUsername] = useState('');
+	//const [username, setUsername] = useState('');
 	const [role, setRole] = useState<string | null>(null);
 	const [avatarUrl, setAvatarUrl] = useState('');
 
@@ -88,7 +82,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 
 			const { data, error, status } = await supabase
 				.from('profiles')
-				.select(`full_name,username, role, avatar_url`)
+				.select(`*`)
 				.eq('id', session?.user.id)
 				.single();
 			if (error && status !== 406) {
@@ -96,12 +90,12 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 			}
 
 			if (data) {
-				setUsername(data.username!);
 				setRole(data?.role as string);
 				setAvatarUrl(data.avatar_url!);
 				setFullName(data.full_name!);
 				setProfile({
 					...data,
+					username: data.full_name!.replace(/\s+/g, '').toLowerCase(),
 				});
 			}
 		} catch (error) {
@@ -127,7 +121,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 			const updates = {
 				...session.user,
 				id: session?.user.id,
-				username,
+				username: fullName.replace(/\s+/g, '').toLowerCase(),
 				avatar_url,
 			};
 
@@ -146,6 +140,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 	};
 
 	//console.log({ profile });
+	//userName: fullName.split(' ').join('').toLowerCase().trim(),
 
 	return (
 		<AuthContext.Provider
@@ -153,7 +148,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 				session,
 				loading,
 				profile,
-				userName: fullName,
+				userName: fullName.replace(/\s+/g, '').toLowerCase(),
 				isAdmin: role === 'ADMIN',
 			}}
 		>

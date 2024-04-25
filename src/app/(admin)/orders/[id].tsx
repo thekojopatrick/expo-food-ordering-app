@@ -6,7 +6,7 @@ import {
 	Text,
 	View,
 } from 'react-native';
-import { OrderItem, OrderStatusList } from '@/types';
+import { Order, OrderItem, OrderStatusList } from '@/types';
 import { Stack, useLocalSearchParams } from 'expo-router';
 //import orders from '@assets/data/orders';
 import { useOrderDetails, useUpdateOrder } from '@/api/orders';
@@ -14,6 +14,7 @@ import { useOrderDetails, useUpdateOrder } from '@/api/orders';
 import Colors from '@/constants/Colors';
 import OrderItemListItem from '@/components/OrderItemListItem';
 import OrderListItem from '@/components/OrderListItem';
+import { notifyUserAboutOrderUpdate } from '@/lib/notifications';
 
 const OrderDetailScreen = () => {
 	const { id: paramId } = useLocalSearchParams();
@@ -31,8 +32,12 @@ const OrderDetailScreen = () => {
 		return <Text>Order not found!</Text>;
 	}
 
-	const updateStatus = (status: string) => {
+	const updateStatus = async (status: string) => {
 		UpdateOrder({ id: id, updatedFields: { status } });
+		if (order) {
+			await notifyUserAboutOrderUpdate({ ...order, status } as Order);
+		}
+		console.log('Notify:', order?.user_id);
 	};
 
 	return (

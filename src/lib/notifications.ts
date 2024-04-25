@@ -5,6 +5,8 @@ import { Button, Platform, Text, View } from 'react-native';
 import { useEffect, useRef, useState } from 'react';
 
 import Constants from 'expo-constants';
+import { Order } from '@/types';
+import { supabase } from './supabase';
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
@@ -16,13 +18,15 @@ Notifications.setNotificationHandler({
 
 // Can use this function below or use Expo's Push Notification Tool from: https://expo.dev/notifications
 async function sendPushNotification(
-	expoPushToken: Notifications.ExpoPushToken
+	expoPushToken: Notifications.ExpoPushToken | string,
+	title: string,
+	body: string
 ) {
 	const message = {
 		to: expoPushToken,
 		sound: 'default',
-		title: 'Original Title',
-		body: 'And here is the body!',
+		title,
+		body,
 		data: { someData: 'goes here' },
 	};
 
@@ -73,3 +77,21 @@ export async function registerForPushNotificationsAsync() {
 
 	return token;
 }
+
+const getUserToken = async (userId: string) => {
+	const { data } = await supabase
+		.from('profiles')
+		.select()
+		.eq('id', userId)
+		.single();
+
+	return data?.expo_push_token;
+};
+
+export const notifyUserAboutOrderUpdate = async (order: Order) => {
+	const token = await getUserToken(order.user_id);
+	const title = `Your order is ${order.status}`;
+	const body = `It should arrive in 10 minutes!`;
+	sendPushNotification(token!, title, body);
+	//console.log({ token });
+};
